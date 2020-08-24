@@ -23,6 +23,7 @@ app.get('/', (req,res) => {
 app.post('/register', (req, res) => {
     //회원가입할때 필요한 정보들을 client에서 가져오면 그것을 데이터베이스에 넣어줌
     
+
     const user = new User(req.body)
 
     user.save((err,userInfo) => {
