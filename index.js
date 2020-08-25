@@ -6,6 +6,7 @@ const cookieParser= require('cookie-parser')
 const {User} = require('./models/User');
 
 const config = require('./config/key')
+const {auth} = require('./middleware/auth')
 
 app.use(bodyParser.urlencoded({extended :true}));
 app.use(bodyParser.json());
@@ -23,7 +24,7 @@ app.get('/', (req,res) => {
     res.send('hello hi');
 })
 
-app.post('/register', (req, res) => {
+app.post('/api/users/register', (req, res) => {
     //회원가입할때 필요한 정보들을 client에서 가져오면 그것을 데이터베이스에 넣어줌
     
 
@@ -37,7 +38,7 @@ app.post('/register', (req, res) => {
     })
 })
 
-app.post('/login', (req,res)=> {
+app.post('/api/users/login', (req,res)=> {
     //요청된 이메일을 데이터베이스에 있는지 찾는다.
     User.findOne({ email: req.body.email}, (err, user)=> {
         if(!user) {
@@ -69,5 +70,21 @@ app.post('/login', (req,res)=> {
         })
     })
 })
+//role -> 0: 일반유저 0이 아니면 관리자
+app.get('/api/users/auth', auth, (req,res) => {
+    //여기 까지 미들웨어를 통과해 오면 au
+    res.status(200).json({
+        _id: req.user._id,
+        isAdmin: req.user.role ===0 ? false : true,
+        isAuth: true, 
+        email: req.user.emaiil,
+        name:req.user.name,
+        lastname: req.user.lastname,
+        role:req.user.role,
+        image: req.user.image
+
+    })
+})
+
 
 app.listen(port , () => console.log(`example app${port}`))
