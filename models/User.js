@@ -60,7 +60,7 @@ userSchema.pre('save', function(next){
 userSchema.methods.comparePassword =function(plainPassword, cb) {
     //plainPassword 123456  암호화된 비밀번호가 같은지 체크
     bcrypt.compare(plainPassword, this.password, function(err, isMatch){
-        if(err) return cb(err),
+        if(err) return cb(err)
         cb(null,isMatch)
     })
 }
@@ -74,7 +74,7 @@ userSchema.methods.generateToken =function(cb){
     // token 을 해석할때 'secretToken'을 넣으면 -> user._id가 나옴
     user.token= token
     user.save(function(err,user){
-        if(err) return cb(err)
+        if(err) return cb(err);
         cb(null,user)
     })
 }
