@@ -23,6 +23,7 @@ function LoginPage(props) {
         }
         dispatch(loginUser(body))
         .then(response=> {
+            //page / 로 이동
             if(response.payload.loginSuccess){
                 props.history.push('/')
             }else {
